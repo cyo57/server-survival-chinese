@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>SERVER: Survival Protocol</title>
+  <title>SERVER：生存协议</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <link rel="stylesheet" href="style.css" />
@@ -17,27 +17,27 @@
     <div id="statsPanel" class="absolute top-4 left-4 glass-panel rounded-xl p-5 w-80 pointer-events-auto">
       <div class="flex justify-between items-end mb-3 border-b border-gray-700 pb-2">
         <h1 class="text-2xl font-bold text-red-500 tracking-widest animate-pulse">
-          SURVIVAL
+          生存
         </h1>
         <span class="text-xs text-gray-500 font-mono">v2.1</span>
       </div>
 
       <div class="space-y-2">
         <div class="flex justify-between items-center">
-          <span class="text-gray-400 text-sm">BUDGET</span>
+          <span class="text-gray-400 text-sm">预算</span>
           <span id="money-display"
             class="text-green-400 font-mono text-xl font-bold transition-colors duration-300">$500</span>
         </div>
         <div class="flex justify-between items-center text-xs">
-          <span class="text-gray-500">Upkeep Cost</span>
+          <span class="text-gray-500">维护成本</span>
           <span id="upkeep-display" class="text-red-400 font-mono">-$0.00/s</span>
         </div>
         <div class="flex justify-between items-center text-xs">
-          <span class="text-gray-500">Elapsed Time</span>
+          <span class="text-gray-500">已用时间</span>
           <span id="elapsed-time" class="text-gray-400 font-mono">00:00</span>
         </div>
         <div class="flex justify-between items-center">
-          <span class="text-gray-400 text-sm">REPUTATION</span>
+          <span class="text-gray-400 text-sm">声望</span>
           <div class="flex items-center gap-2">
             <div class="w-24 h-3 bg-gray-800 rounded-full overflow-hidden relative">
               <div id="rep-bar" class="h-full bg-yellow-500 transition-all duration-500" style="width: 100%"></div>
@@ -46,77 +46,77 @@
           </div>
         </div>
         <div class="flex justify-between items-center pt-1">
-          <span class="text-gray-400 text-sm">LOAD (RPS)</span>
+          <span class="text-gray-400 text-sm">负载（RPS）</span>
           <span id="rps-display" class="text-blue-300 font-mono text-sm">0.0 req/s</span>
         </div>
         <div class="flex justify-between items-center text-xs" id="rps-milestone-row">
-          <span class="text-gray-500">Next RPS Surge</span>
+          <span class="text-gray-500">下一次RPS激增</span>
           <div class="flex items-center gap-2 font-mono">
             <span id="rps-next" class="text-orange-400">×1.0</span>
-            <span class="text-gray-600">in</span>
+            <span class="text-gray-600">将在</span>
             <span id="rps-countdown" class="text-cyan-400">0:00</span>
           </div>
         </div>
         <div class="flex justify-between items-center pt-1">
-          <span class="text-gray-400 text-sm">TRAFFIC</span>
+          <span class="text-gray-400 text-sm">流量</span>
           <div class="flex gap-1 text-[10px] font-mono">
-            <span class="text-green-400" id="mix-static" title="Static GET">ST</span>
-            <span class="text-blue-400" id="mix-read" title="Read GET">RD</span>
-            <span class="text-orange-400" id="mix-write" title="Write POST">WR</span>
-            <span class="text-yellow-400" id="mix-upload" title="Upload">UP</span>
-            <span class="text-cyan-400" id="mix-search" title="Search">SR</span>
-            <span class="text-red-400" id="mix-malicious" title="Malicious">⚠️</span>
+            <span class="text-green-400" id="mix-static" title="静态 GET">ST</span>
+            <span class="text-blue-400" id="mix-read" title="读取 GET">RD</span>
+            <span class="text-orange-400" id="mix-write" title="写入 POST">WR</span>
+            <span class="text-yellow-400" id="mix-upload" title="上传">UP</span>
+            <span class="text-cyan-400" id="mix-search" title="搜索">SR</span>
+            <span class="text-red-400" id="mix-malicious" title="恶意流量">⚠️</span>
           </div>
         </div>
 
         <!-- Failures Table -->
         <div id="failures-panel" class="mt-2 pt-2 border-t border-gray-700/50 hidden">
           <div class="flex justify-between items-center mb-2">
-            <span class="text-gray-500 text-xs uppercase">Failures</span>
-            <span id="failures-total" class="text-red-400 font-mono text-xs">0 total</span>
+            <span class="text-gray-500 text-xs uppercase">失败统计</span>
+            <span id="failures-total" class="text-red-400 font-mono text-xs">0 次</span>
           </div>
           <table class="w-full text-[10px] font-mono">
             <thead>
               <tr class="text-gray-500">
-                <th class="text-left font-normal">Type</th>
-                <th class="text-right font-normal">Count</th>
-                <th class="text-right font-normal">Rep Loss</th>
+                <th class="text-left font-normal">类型</th>
+                <th class="text-right font-normal">数量</th>
+                <th class="text-right font-normal">声望损失</th>
               </tr>
             </thead>
             <tbody id="failures-tbody">
               <tr class="text-purple-400" id="fail-row-malicious">
-                <td>🛡️ Fraud Leak</td>
+                <td>🛡️ 攻击漏过</td>
                 <td class="text-right" id="fail-malicious">0</td>
                 <td class="text-right text-red-400" id="fail-malicious-rep">
                   0
                 </td>
               </tr>
               <tr class="text-green-400" id="fail-row-static">
-                <td>ST Static</td>
+                <td>ST 静态</td>
                 <td class="text-right" id="fail-static">0</td>
                 <td class="text-right text-red-400" id="fail-static-rep">
                   0
                 </td>
               </tr>
               <tr class="text-blue-400" id="fail-row-read">
-                <td>RD Read</td>
+                <td>RD 读取</td>
                 <td class="text-right" id="fail-read">0</td>
                 <td class="text-right text-red-400" id="fail-read-rep">0</td>
               </tr>
               <tr class="text-orange-400" id="fail-row-write">
-                <td>WR Write</td>
+                <td>WR 写入</td>
                 <td class="text-right" id="fail-write">0</td>
                 <td class="text-right text-red-400" id="fail-write-rep">0</td>
               </tr>
               <tr class="text-yellow-400" id="fail-row-upload">
-                <td>UP Upload</td>
+                <td>UP 上传</td>
                 <td class="text-right" id="fail-upload">0</td>
                 <td class="text-right text-red-400" id="fail-upload-rep">
                   0
                 </td>
               </tr>
               <tr class="text-cyan-400" id="fail-row-search">
-                <td>SR Search</td>
+                <td>SR 搜索</td>
                 <td class="text-right" id="fail-search">0</td>
                 <td class="text-right text-red-400" id="fail-search-rep">
                   0
@@ -127,7 +127,7 @@
         </div>
 
         <div class="flex justify-between items-center pt-3 border-t border-gray-700 mt-2">
-          <span class="text-gray-300 font-bold text-lg">TOTAL SCORE</span>
+          <span class="text-gray-300 font-bold text-lg">总得分</span>
           <span id="total-score-display" class="text-white font-mono text-2xl font-bold">0</span>
         </div>
       </div>
@@ -137,19 +137,19 @@
       <!-- Score Details Panel (Top Right) -->
       <div id="detailsPanel" class="glass-panel rounded-xl p-4 w-60 pointer-events-auto">
         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 border-b border-gray-700 pb-1">
-          Traffic Score Details
+          流量得分明细
         </h3>
         <div class="space-y-1 text-sm font-mono">
           <div class="flex justify-between items-center">
-            <span class="text-gray-500">Storage (S3)</span>
+            <span class="text-gray-500">存储（S3）</span>
             <span id="score-storage" class="text-emerald-300">0</span>
           </div>
           <div class="flex justify-between items-center">
-            <span class="text-gray-500">Database (SQL)</span>
+            <span class="text-gray-500">数据库（SQL）</span>
             <span id="score-database" class="text-red-300">0</span>
           </div>
           <div class="flex justify-between items-center pt-1 border-t border-gray-800">
-            <span class="text-purple-300 font-bold">ATTACKS BLOCKED</span>
+            <span class="text-purple-300 font-bold">拦截攻击数</span>
             <span id="score-malicious" class="text-purple-300">0</span>
           </div>
         </div>
@@ -159,13 +159,13 @@
       <div id="healthPanel" class="glass-panel rounded-xl p-4 w-72 pointer-events-auto transition-all duration-300">
         <div class="flex justify-between items-center mb-2 border-b border-gray-700 pb-1">
           <h3 class="text-xs font-bold text-red-400 uppercase tracking-wider">
-            Service Health
+            服务健康
           </h3>
           <div class="flex items-center gap-2">
             <button id="auto-repair-toggle" onclick="toggleAutoRepair()"
               class="px-2 py-0.5 rounded text-xs font-mono bg-gray-700 text-gray-400 hover:bg-gray-600 transition"
-              title="Auto-repair services (+10% upkeep)">
-              Auto-Repair: OFF
+              title="自动修复服务（+10%维护费）">
+              自动修复：关
             </button>
             <button onclick="togglePanel('health-panel-content', 'health-panel-icon')"
               class="w-6 h-6 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded border border-gray-600 text-gray-400 transition">
@@ -175,19 +175,19 @@
         </div>
         <div id="health-panel-content">
           <div id="service-health-list" class="text-sm font-mono mb-2">
-            <div class="text-green-400 text-xs">All services healthy</div>
+            <div class="text-green-400 text-xs">所有服务健康</div>
           </div>
           <div id="repair-cost-table" class="text-xs border-t border-gray-700 pt-2 hidden">
             <div class="grid grid-cols-3 gap-1 text-gray-500 mb-1">
-              <span>Service</span>
-              <span class="text-center">Repair</span>
-              <span class="text-right">Auto Repair/min</span>
+              <span>服务</span>
+              <span class="text-center">修复</span>
+              <span class="text-right">自动修复/分</span>
             </div>
             <div id="repair-cost-rows" class="space-y-0.5"></div>
           </div>
           <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-gray-700 space-y-1">
-            <div>🔧 Click damaged services to repair manually</div>
-            <div>⚡ Auto-Repair: Heals services at 10% of service cost/min</div>
+            <div>🔧 点击损坏的服务可手动维修</div>
+            <div>⚡ 自动修复：以服务成本的10%/分钟恢复</div>
           </div>
         </div>
       </div>
@@ -196,7 +196,7 @@
       <div id="financesPanel" class="glass-panel rounded-xl p-4 w-72 pointer-events-auto transition-all duration-300">
         <div class="flex justify-between items-center mb-2 border-b border-gray-700 pb-1">
           <h3 class="text-xs font-bold text-green-400 uppercase tracking-wider">
-            Finances
+            财务
           </h3>
           <button onclick="togglePanel('finances-panel-content', 'finances-panel-icon')"
             class="w-6 h-6 flex items-center justify-center bg-gray-800 hover:bg-gray-700 rounded border border-gray-600 text-gray-400 transition">
@@ -208,7 +208,7 @@
           <!-- Income Section -->
           <div class="mb-3">
             <div class="text-xs text-gray-500 mb-1 flex justify-between">
-              <span>Income by Request Type</span>
+              <span>按请求类型收入</span>
               <span id="income-total" class="text-green-400 font-bold">$0</span>
             </div>
             <div id="income-details" class="space-y-0.5 text-xs pl-2 border-l border-gray-700">
@@ -219,7 +219,7 @@
           <!-- Expenses Section -->
           <div class="mb-3">
             <div class="text-xs text-gray-500 mb-1 flex justify-between">
-              <span>Expenses Breakdown</span>
+              <span>支出明细</span>
               <span id="expense-total" class="text-red-400 font-bold">$0</span>
             </div>
             <div id="expense-details" class="space-y-0.5 text-xs pl-2 border-l border-gray-700">
@@ -230,7 +230,7 @@
           <!-- Net Profit -->
           <div class="border-t border-gray-700 pt-2 mt-2">
             <div class="grid grid-cols-2 gap-1 text-xs">
-              <span class="text-gray-300 font-bold">Net Profit</span>
+              <span class="text-gray-300 font-bold">净利润</span>
               <span id="net-profit" class="text-right font-bold text-yellow-400">$0</span>
             </div>
           </div>
@@ -242,7 +242,7 @@
     <div id="active-event-bar" class="fixed top-0 left-0 right-0 h-8 z-40 hidden">
       <div class="h-full flex items-center justify-center gap-3 text-white font-bold text-sm event-active-bar">
         <span id="active-event-icon">⚡</span>
-        <span id="active-event-text">EVENT ACTIVE</span>
+        <span id="active-event-text">事件进行中</span>
         <span id="active-event-timer" class="font-mono bg-black/30 px-2 rounded"></span>
       </div>
       <div id="active-event-progress" class="absolute bottom-0 left-0 h-1 bg-white/50 transition-all duration-100"
@@ -259,7 +259,7 @@
       class="absolute top-4 left-1/2 transform -translate-x-1/2 glass-panel rounded-xl p-2 pointer-events-auto flex gap-2">
       <button onclick="saveGameState()" id="btn-save"
         class="time-btn w-10 h-10 rounded-lg border border-gray-600 text-gray-400 hover:text-white hover:border-green-500 hover:text-green-400 flex items-center justify-center"
-        title="Save Game">
+        title="保存游戏">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M8 7H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
@@ -267,7 +267,7 @@
       </button>
       <button onclick="restartGame()" id="btn-restart"
         class="time-btn w-10 h-10 rounded-lg border border-gray-600 text-gray-400 hover:text-white hover:border-red-500 hover:text-red-400 flex items-center justify-center mr-2"
-        title="Restart Game">
+        title="重新开始">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
@@ -296,18 +296,18 @@
     </div>
 
     <!-- Sandbox Control Panel (Bottom Left - replaces objectives in sandbox mode) -->
-    <div id="sandboxPanel" class="hidden absolute bottom-24 left-4 glass-panel rounded-xl p-4 pointer-events-auto w-80">
+      <div id="sandboxPanel" class="hidden absolute bottom-24 left-4 glass-panel rounded-xl p-4 pointer-events-auto w-80">
       <div class="flex justify-between items-center mb-3 border-b border-gray-700 pb-2">
-        <h3 class="text-sm font-bold text-purple-400">SANDBOX</h3>
+        <h3 class="text-sm font-bold text-purple-400">沙盒</h3>
         <button onclick="clearAllServices()"
           class="text-xs text-red-400 hover:text-red-300 px-2 py-1 border border-red-900 rounded">
-          Clear All
+          全部清空
         </button>
       </div>
 
       <!-- BUDGET -->
       <div class="mb-3">
-        <div class="text-xs text-gray-400 mb-1">Budget ($)</div>
+        <div class="text-xs text-gray-400 mb-1">预算（$）</div>
         <div class="flex items-center gap-2">
           <input type="range" id="budget-slider" min="0" max="10000" step="100" value="2000"
             oninput="setSandboxBudget(this.value)" class="flex-1 h-2 bg-gray-700 rounded-lg accent-green-500" />
@@ -317,18 +317,18 @@
         <div class="flex gap-2 mt-2">
           <button onclick="resetBudget()"
             class="flex-1 text-xs py-1.5 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded">
-            Reset $
+            重置预算
           </button>
           <button onclick="toggleUpkeep()" id="upkeep-toggle"
             class="flex-1 text-xs py-1.5 bg-green-900/50 text-gray-300 rounded border border-gray-600">
-            Upkeep: OFF
+            维护费：关
           </button>
         </div>
       </div>
 
       <!-- RPS -->
       <div class="mb-3">
-        <div class="text-xs text-gray-400 mb-1">Traffic Rate (req/s)</div>
+        <div class="text-xs text-gray-400 mb-1">流量速率（请求/秒）</div>
         <div class="flex items-center gap-2">
           <input type="range" id="rps-slider" min="0" max="50" step="0.5" value="1" oninput="setSandboxRPS(this.value)"
             class="flex-1 h-2 bg-gray-700 rounded-lg accent-blue-500" />
@@ -339,10 +339,10 @@
 
       <!-- TRAFFIC MIX -->
       <div class="mb-3">
-        <div class="text-xs text-gray-400 mb-1">Traffic Mix (%)</div>
+        <div class="text-xs text-gray-400 mb-1">流量占比（%）</div>
         <!-- STATIC -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="w-14 text-xs text-green-400">STATIC</span>
+          <span class="w-14 text-xs text-green-400">静态</span>
           <input type="range" id="static-slider" min="0" max="100" value="30"
             oninput="setTrafficMix('STATIC',this.value)" class="flex-1 h-1.5 bg-gray-700 rounded-lg accent-green-500" />
           <input type="number" id="static-input" value="30" min="0" max="100"
@@ -351,7 +351,7 @@
         </div>
         <!-- READ -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="w-14 text-xs text-blue-400">READ</span>
+          <span class="w-14 text-xs text-blue-400">读取</span>
           <input type="range" id="read-slider" min="0" max="100" value="20" oninput="setTrafficMix('READ',this.value)"
             class="flex-1 h-1.5 bg-gray-700 rounded-lg accent-blue-500" />
           <input type="number" id="read-input" value="20" min="0" max="100" onchange="setTrafficMix('READ',this.value)"
@@ -359,7 +359,7 @@
         </div>
         <!-- WRITE -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="w-14 text-xs text-orange-400">WRITE</span>
+          <span class="w-14 text-xs text-orange-400">写入</span>
           <input type="range" id="write-slider" min="0" max="100" value="15" oninput="setTrafficMix('WRITE',this.value)"
             class="flex-1 h-1.5 bg-gray-700 rounded-lg accent-orange-500" />
           <input type="number" id="write-input" value="15" min="0" max="100"
@@ -368,7 +368,7 @@
         </div>
         <!-- UPLOAD -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="w-14 text-xs text-yellow-400">UPLOAD</span>
+          <span class="w-14 text-xs text-yellow-400">上传</span>
           <input type="range" id="upload-slider" min="0" max="100" value="5"
             oninput="setTrafficMix('UPLOAD',this.value)"
             class="flex-1 h-1.5 bg-gray-700 rounded-lg accent-yellow-500" />
@@ -378,7 +378,7 @@
         </div>
         <!-- SEARCH -->
         <div class="flex items-center gap-2 mb-1">
-          <span class="w-14 text-xs text-cyan-400">SEARCH</span>
+          <span class="w-14 text-xs text-cyan-400">搜索</span>
           <input type="range" id="search-slider" min="0" max="100" value="10"
             oninput="setTrafficMix('SEARCH',this.value)" class="flex-1 h-1.5 bg-gray-700 rounded-lg accent-cyan-500" />
           <input type="number" id="search-input" value="10" min="0" max="100"
@@ -387,7 +387,7 @@
         </div>
         <!-- MALICIOUS -->
         <div class="flex items-center gap-2">
-          <span class="w-14 text-xs text-red-400">ATTACK</span>
+          <span class="w-14 text-xs text-red-400">攻击</span>
           <input type="range" id="malicious-slider" min="0" max="100" value="20"
             oninput="setTrafficMix('MALICIOUS',this.value)"
             class="flex-1 h-1.5 bg-gray-700 rounded-lg accent-red-500" />
@@ -400,32 +400,32 @@
       <!-- BURST -->
       <div class="border-t border-gray-700 pt-2">
         <div class="flex items-center gap-2 mb-2">
-          <span class="text-xs text-gray-400">Burst:</span>
+          <span class="text-xs text-gray-400">瞬时生成：</span>
           <input type="number" id="burst-input" value="10" min="1" onchange="setBurstCount(this.value)"
             class="w-16 px-2 py-1 bg-gray-800 border border-gray-600 rounded text-white text-xs text-center font-mono" />
         </div>
         <div class="flex gap-1 flex-wrap">
           <button onclick="spawnBurst('STATIC')"
             class="flex-1 bg-green-900/50 hover:bg-green-800 text-green-400 text-xs py-1.5 rounded border border-green-700/50">
-            STATIC
+            静态
           </button>
           <button onclick="spawnBurst('READ')"
             class="flex-1 bg-blue-900/50 hover:bg-blue-800 text-blue-400 text-xs py-1.5 rounded border border-blue-700/50">
-            READ
+            读取
           </button>
           <button onclick="spawnBurst('WRITE')"
             class="flex-1 bg-orange-900/50 hover:bg-orange-800 text-orange-400 text-xs py-1.5 rounded border border-orange-700/50">
-            WRITE
+            写入
           </button>
         </div>
         <div class="flex gap-1 flex-wrap mt-1">
           <button onclick="spawnBurst('UPLOAD')"
             class="flex-1 bg-yellow-900/50 hover:bg-yellow-800 text-yellow-400 text-xs py-1.5 rounded border border-yellow-700/50">
-            UPLOAD
+            上传
           </button>
           <button onclick="spawnBurst('SEARCH')"
             class="flex-1 bg-cyan-900/50 hover:bg-cyan-800 text-cyan-400 text-xs py-1.5 rounded border border-cyan-700/50">
-            SEARCH
+            搜索
           </button>
           <button onclick="spawnBurst('MALICIOUS')"
             class="flex-1 bg-red-900/50 hover:bg-red-800 text-red-400 text-xs py-1.5 rounded border border-red-700/50">
@@ -439,27 +439,27 @@
     <div id="objectivesPanel" class="absolute bottom-24 left-4 glass-panel rounded-xl p-4 pointer-events-auto max-w-xs">
       <div class="flex justify-between items-center mb-2">
         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">
-          Current Objectives
+          当前目标
         </h3>
         <span
-          class="text-[10px] bg-red-900/50 px-2 py-0.5 rounded text-red-400 border border-red-800 animate-pulse">LIVE</span>
+          class="text-[10px] bg-red-900/50 px-2 py-0.5 rounded text-red-400 border border-red-800 animate-pulse">进行中</span>
       </div>
       <ul class="text-xs text-gray-300 space-y-2 font-mono">
         <li class="flex items-center">
           <span class="w-2 h-2 rounded-full bg-red-500 mr-2 animate-pulse"></span>
-          Survive Endless Traffic
+          在无尽流量中存活
         </li>
         <li id="goal-storage" class="flex items-center">
           <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
-          Route STATIC/UPLOAD → Storage
+          STATIC/UPLOAD → 存储
         </li>
         <li id="goal-db" class="flex items-center">
           <span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
-          Route READ/WRITE/SEARCH → Database
+          READ/WRITE/SEARCH → 数据库
         </li>
         <li id="goal-waf" class="flex items-center">
           <span class="w-2 h-2 rounded-full bg-purple-500 mr-2"></span>
-          Block MALICIOUS with Firewall
+          防火墙拦截恶意流量
         </li>
       </ul>
     </div>
@@ -473,7 +473,7 @@
         class="service-btn bg-gray-700 text-gray-200 p-2 rounded-lg w-16 h-16 flex flex-col items-center justify-center mr-2 border border-gray-600"
         onclick="showFAQ()">
         <div class="text-xl">?</div>
-        <span class="text-[9px] font-bold mt-1 uppercase">Help</span>
+        <span class="text-[9px] font-bold mt-1 uppercase">帮助</span>
       </button>
 
       <!-- Mute Button -->
@@ -481,7 +481,7 @@
         class="service-btn bg-gray-700 text-gray-200 p-2 rounded-lg w-16 h-16 flex flex-col items-center justify-center border border-gray-600"
         onclick="toggleMute()">
         <div class="text-xl" id="mute-icon">🔊</div>
-        <span class="text-[9px] font-bold mt-1 uppercase">Sound</span>
+        <span class="text-[9px] font-bold mt-1 uppercase">声音</span>
       </button>
 
       <!-- Tools -->
@@ -494,7 +494,7 @@
               d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122">
             </path>
           </svg>
-          <span class="text-[10px] uppercase">Select</span>
+          <span class="text-[10px] uppercase">选择</span>
         </button>
 
         <button id="tool-connect"
@@ -505,7 +505,7 @@
               d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
             </path>
           </svg>
-          <span class="text-[10px] uppercase">Link</span>
+          <span class="text-[10px] uppercase">连接</span>
         </button>
 
         <button id="tool-delete"
@@ -516,7 +516,7 @@
               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
             </path>
           </svg>
-          <span class="text-[10px] uppercase">Demolish</span>
+          <span class="text-[10px] uppercase">拆除</span>
         </button>
 
         <button id="tool-unlink"
@@ -526,7 +526,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
           </svg>
-          <span class="text-[10px] uppercase">Unlink</span>
+          <span class="text-[10px] uppercase">断开</span>
         </button>
       </div>
 
@@ -540,7 +540,7 @@
             $40
           </div>
           <div class="w-4 h-4 bg-purple-500 rounded-sm mb-1 shadow-[0_0_10px_rgba(168,85,247,0.6)]"></div>
-          <span class="text-[10px] font-bold mt-1">FW</span>
+          <span class="text-[10px] font-bold mt-1">防火墙</span>
         </button>
 
         <!-- SQS -->
@@ -551,7 +551,7 @@
             $40
           </div>
           <div class="w-5 h-3 bg-orange-500 rounded-sm mb-1 shadow-[0_0_10px_rgba(255,153,0,0.6)]"></div>
-          <span class="text-[10px] font-bold mt-1">Queue</span>
+          <span class="text-[10px] font-bold mt-1">队列</span>
         </button>
 
         <button id="tool-alb"
@@ -561,7 +561,7 @@
             $50
           </div>
           <div class="w-4 h-4 bg-blue-500 rounded-sm mb-1 shadow-[0_0_10px_rgba(59,130,246,0.6)]"></div>
-          <span class="text-[10px] font-bold mt-1">LB</span>
+          <span class="text-[10px] font-bold mt-1">负载</span>
         </button>
 
         <button id="tool-lambda"
@@ -571,7 +571,7 @@
             $60
           </div>
           <div class="w-4 h-4 bg-orange-500 rounded-full mb-1 shadow-[0_0_10px_rgba(249,115,22,0.6)]"></div>
-          <span class="text-[10px] font-bold mt-1">Compute</span>
+          <span class="text-[10px] font-bold mt-1">计算</span>
         </button>
 
         <button id="tool-db"
@@ -583,7 +583,7 @@
           <div
             class="w-4 h-4 bg-red-600 rounded-sm mb-1 shadow-[0_0_10px_rgba(220,38,38,0.6)] border-b-2 border-red-800">
           </div>
-          <span class="text-[10px] font-bold mt-1">SQL DB</span>
+          <span class="text-[10px] font-bold mt-1">数据库</span>
         </button>
 
         <!-- Cache -->
@@ -594,7 +594,7 @@
             $60
           </div>
           <div class="w-4 h-4 bg-red-600 rounded mb-1 shadow-[0_0_10px_rgba(220,56,45,0.6)]"></div>
-          <span class="text-[10px] font-bold mt-1">Cache</span>
+          <span class="text-[10px] font-bold mt-1">缓存</span>
         </button>
 
         <!-- CDN -->
@@ -618,7 +618,7 @@
             $25
           </div>
           <div class="w-4 h-4 bg-emerald-500 rounded-full mb-1 shadow-[0_0_10px_rgba(16,185,129,0.6)]"></div>
-          <span class="text-[10px] font-bold mt-1">Storage</span>
+          <span class="text-[10px] font-bold mt-1">存储</span>
         </button>
       </div>
     </div>
@@ -645,20 +645,20 @@
     class="hidden fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center backdrop-blur-sm">
     <div class="glass-panel p-8 rounded-2xl text-center max-w-md border border-gray-600">
       <h2 id="modal-title" class="text-4xl font-bold mb-4 text-white font-mono tracking-tighter">
-        SYSTEM FAILURE
+        系统故障
       </h2>
       <div class="h-px w-full bg-gray-700 mb-6"></div>
       <p id="modal-desc" class="text-gray-300 mb-8 text-sm leading-relaxed">
-        Infrastructure collapsed.
+        基础设施崩溃。
       </p>
       <div class="flex justify-center gap-4">
         <button onclick="retryWithSameArchitecture()"
           class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition hover:scale-105 font-mono uppercase text-sm">
-          Retry Same Setup
+          用相同架构重试
         </button>
         <button onclick="restartGame()"
           class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition hover:scale-105 font-mono uppercase text-sm">
-          Start Fresh
+          全新开始
         </button>
       </div>
     </div>
@@ -676,33 +676,33 @@
 
       <h1
         class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mb-2 tracking-tighter filter drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">
-        SERVER<br />SURVIVAL
+        服务器<br />生存战
       </h1>
 
       <div class="space-y-4">
         <button id="resume-btn" onclick="resumeGame()"
           class="hidden w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg transform transition hover:scale-105 font-mono uppercase text-lg border border-blue-400/50">
-          Resume Game
+          继续游戏
         </button>
 
         <button onclick="startGame()"
           class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg transform transition hover:scale-105 font-mono uppercase text-lg border border-green-400/50">
-          Start Survival
+          开始生存
         </button>
 
         <button onclick="startSandbox()"
           class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg transform transition hover:scale-105 font-mono uppercase text-lg border border-purple-400/50">
-          Sandbox Mode
+          沙盒模式
         </button>
 
         <button onclick="loadGameState()" id="load-btn"
           class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg transform transition hover:scale-105 font-mono uppercase text-lg border border-cyan-400/50">
-          Continue Game
+          载入存档
         </button>
 
         <button onclick="showFAQ()"
           class="w-full bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold py-3 px-8 rounded-lg border border-gray-600 transition hover:text-white font-mono uppercase">
-          Manual / FAQ
+          手册 / FAQ
         </button>
       </div>
 
@@ -722,7 +722,7 @@
         <div>
           <h3 id="tutorial-title" class="text-lg font-bold text-white"></h3>
           <div class="text-xs text-gray-400">
-            Step <span id="tutorial-step-num">1</span> of
+            第 <span id="tutorial-step-num">1</span> / 共
             <span id="tutorial-total-steps">10</span>
           </div>
         </div>
@@ -740,12 +740,12 @@
       <div class="flex justify-between items-center">
         <button id="tutorial-skip" class="text-gray-500 hover:text-gray-300 text-sm transition"
           onclick="window.tutorial?.skip()">
-          Skip Tutorial
+          跳过教程
         </button>
         <div class="flex gap-2">
           <button id="tutorial-next"
             class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-6 rounded-lg transition hidden">
-            Next
+            下一步
           </button>
         </div>
       </div>
@@ -764,7 +764,7 @@
   <div id="faq-modal" class="fixed inset-0 bg-black/95 flex items-center justify-center z-50 hidden">
     <div class="glass-panel p-8 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-700">
       <div class="flex justify-between items-center mb-6 border-b border-gray-700 pb-4">
-        <h2 class="text-2xl font-bold text-white">OPERATOR MANUAL</h2>
+        <h2 class="text-2xl font-bold text-white">操作手册</h2>
         <button onclick="closeFAQ()" class="text-gray-400 hover:text-white">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -775,51 +775,42 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Traffic Types -->
         <div>
-          <h3 class="text-lg font-bold text-blue-400 mb-4">TRAFFIC TYPES</h3>
+          <h3 class="text-lg font-bold text-blue-400 mb-4">流量类型</h3>
           <div class="space-y-3">
             <div class="bg-gray-800/50 p-3 rounded border border-green-900/50">
-              <strong class="text-green-400">STATIC (GET)</strong>
+              <strong class="text-green-400">STATIC（GET）</strong>
               <p class="text-sm text-gray-400">
-                Images, CSS, JS. Route to
-                <span class="text-emerald-400">Storage</span>. 90% cache hit
-                rate.
+                图片、CSS、JS → <span class="text-emerald-400">存储</span>。90% 缓存命中率。
               </p>
             </div>
             <div class="bg-gray-800/50 p-3 rounded border border-blue-900/50">
-              <strong class="text-blue-400">READ (GET)</strong>
+              <strong class="text-blue-400">READ（GET）</strong>
               <p class="text-sm text-gray-400">
-                API data fetch. Route to
-                <span class="text-red-400">SQL DB</span>. 40% cache hit rate.
+                API 数据读取 → <span class="text-red-400">SQL 数据库</span>。40% 缓存命中率。
               </p>
             </div>
             <div class="bg-gray-800/50 p-3 rounded border border-orange-900/50">
-              <strong class="text-orange-400">WRITE (POST/PUT)</strong>
+              <strong class="text-orange-400">WRITE（POST/PUT）</strong>
               <p class="text-sm text-gray-400">
-                Database writes. Route to
-                <span class="text-red-400">SQL DB</span>. Never cached.
+                数据库写入 → <span class="text-red-400">SQL 数据库</span>。不缓存。
               </p>
             </div>
             <div class="bg-gray-800/50 p-3 rounded border border-yellow-900/50">
-              <strong class="text-yellow-400">UPLOAD (POST)</strong>
+              <strong class="text-yellow-400">UPLOAD（POST）</strong>
               <p class="text-sm text-gray-400">
-                File uploads. Route to
-                <span class="text-emerald-400">Storage</span>. Never cached.
-                Heavy processing.
+                文件上传 → <span class="text-emerald-400">存储</span>。不缓存，处理耗时。
               </p>
             </div>
             <div class="bg-gray-800/50 p-3 rounded border border-cyan-900/50">
-              <strong class="text-cyan-400">SEARCH (GET)</strong>
+              <strong class="text-cyan-400">SEARCH（GET）</strong>
               <p class="text-sm text-gray-400">
-                Complex queries. Route to
-                <span class="text-red-400">SQL DB</span>. 15% cache hit. Heavy
-                processing.
+                复杂查询 → <span class="text-red-400">SQL 数据库</span>。15% 缓存命中，处理耗时。
               </p>
             </div>
             <div class="bg-gray-800/50 p-3 rounded border border-red-900/50">
               <strong class="text-red-400">MALICIOUS</strong>
               <p class="text-sm text-gray-400">
-                DDoS & attacks. Block with
-                <span class="text-purple-400">Firewall</span>.
+                DDoS/攻击流量 → 使用 <span class="text-purple-400">防火墙</span> 拦截。
               </p>
             </div>
           </div>
@@ -827,35 +818,35 @@
 
         <!-- Services -->
         <div>
-          <h3 class="text-lg font-bold text-blue-400 mb-4">SERVICES</h3>
+          <h3 class="text-lg font-bold text-blue-400 mb-4">服务</h3>
           <ul class="space-y-2 text-sm text-gray-300">
             <li class="flex justify-between">
-              <span class="text-purple-400 font-bold">Firewall</span>
-              <span>Blocks Fraud ($40)</span>
+              <span class="text-purple-400 font-bold">防火墙</span>
+              <span>拦截恶意流量（$40）</span>
             </li>
             <li class="flex justify-between">
-              <span class="text-orange-500 font-bold">Message Queue</span>
-              <span>Buffers 200 requests ($35)</span>
+              <span class="text-orange-500 font-bold">消息队列</span>
+              <span>缓冲 200 请求（$35）</span>
             </li>
             <li class="flex justify-between">
-              <span class="text-blue-400 font-bold">Load Balancer</span>
-              <span>Distributes Traffic ($50)</span>
+              <span class="text-blue-400 font-bold">负载均衡</span>
+              <span>分发流量（$50）</span>
             </li>
             <li class="flex justify-between">
-              <span class="text-orange-400 font-bold">Compute</span>
-              <span>Processes Requests ($60)</span>
+              <span class="text-orange-400 font-bold">计算</span>
+              <span>处理请求，可升级（$60）</span>
             </li>
             <li class="flex justify-between">
-              <span class="text-red-400 font-bold">Relational DB</span>
-              <span>Stores API Data ($150)</span>
+              <span class="text-red-400 font-bold">关系型数据库</span>
+              <span>存储 API 数据，可升级（$150）</span>
             </li>
             <li class="flex justify-between">
-              <span class="text-red-500 font-bold">Memory Cache</span>
-              <span>Cache layer ($60)</span>
+              <span class="text-red-500 font-bold">内存缓存</span>
+              <span>缓存层（$60）</span>
             </li>
             <li class="flex justify-between">
-              <span class="text-emerald-400 font-bold">File Storage</span>
-              <span>Stores Web Data ($25)</span>
+              <span class="text-emerald-400 font-bold">文件存储</span>
+              <span>保存静态/上传数据（$25）</span>
             </li>
           </ul>
         </div>
@@ -863,7 +854,7 @@
 
       <!-- Tools -->
       <div class="mt-8">
-        <h3 class="text-lg font-bold text-blue-400 mb-4">TOOLS & CONTROLS</h3>
+        <h3 class="text-lg font-bold text-blue-400 mb-4">工具与操作</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div class="bg-gray-800/30 p-3 rounded border border-gray-700">
             <div class="flex items-center mb-2">
@@ -874,11 +865,10 @@
                   </path>
                 </svg>
               </div>
-              <strong class="text-white">SELECT</strong>
+              <strong class="text-white">选择</strong>
             </div>
             <p class="text-gray-400">
-              Inspect services to see load and stats. Click Compute/DB to
-              upgrade.
+              查看服务负载与状态。点击计算/数据库可升级。
             </p>
           </div>
           <div class="bg-gray-800/30 p-3 rounded border border-gray-700">
@@ -890,12 +880,10 @@
                   </path>
                 </svg>
               </div>
-              <strong class="text-white">CONNECT</strong>
+              <strong class="text-white">连接</strong>
             </div>
             <p class="text-gray-400">
-              Link nodes together. Click
-              <span class="text-green-400">Source</span> then
-              <span class="text-blue-400">Destination</span>.
+              连接节点，先点<span class="text-green-400">源</span>再点<span class="text-blue-400">目标</span>。
             </p>
           </div>
           <div class="bg-gray-800/30 p-3 rounded border border-gray-700">
@@ -907,9 +895,9 @@
                   </path>
                 </svg>
               </div>
-              <strong class="text-white">DELETE</strong>
+              <strong class="text-white">拆除</strong>
             </div>
-            <p class="text-gray-400">Remove services. Refunds 50% of cost.</p>
+            <p class="text-gray-400">移除服务，返还 50% 成本。</p>
           </div>
           <div class="bg-gray-800/30 p-3 rounded border border-gray-700">
             <div class="flex items-center mb-2">
@@ -920,11 +908,10 @@
                   </path>
                 </svg>
               </div>
-              <strong class="text-white">UNLINK</strong>
+              <strong class="text-white">断开</strong>
             </div>
             <p class="text-gray-400">
-              Remove connections between services. Click on a link to delete
-              it.
+              移除服务间的连接，点击连线即可删除。
             </p>
           </div>
 
@@ -932,39 +919,38 @@
             <div class="flex items-center mb-2">
               <strong class="text-white">HUD</strong>
             </div>
-            <p class="text-gray-400">Press H for hiding HUD.</p>
+            <p class="text-gray-400">按 H 隐藏界面。</p>
           </div>
 
           <div class="bg-gray-800/30 p-3 rounded border border-gray-700">
             <div class="flex items-center mb-2">
-              <strong class="text-white">View</strong>
+              <strong class="text-white">视角</strong>
             </div>
-            <p class="text-gray-400">Press R for reset view.</p>
+            <p class="text-gray-400">按 R 重置视角。</p>
           </div>
         </div>
       </div>
 
       <!-- Mechanics -->
       <div class="mt-8">
-        <h3 class="text-lg font-bold text-blue-400 mb-4">MECHANICS</h3>
+        <h3 class="text-lg font-bold text-blue-400 mb-4">机制</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div class="bg-gray-800/30 p-3 rounded">
-            <strong class="text-white block mb-1">Upgrades</strong>
+            <strong class="text-white block mb-1">升级</strong>
             <p class="text-gray-400">
-              Click existing Compute/DB/Cache instances to upgrade capacity
-              (Tier 1-3).
+              点击计算/数据库/缓存可升级容量（T1-T3）。
             </p>
           </div>
           <div class="bg-gray-800/30 p-3 rounded">
-            <strong class="text-white block mb-1">Load Balancing</strong>
+            <strong class="text-white block mb-1">负载均衡</strong>
             <p class="text-gray-400">
-              Load Balancers use Round Robin to distribute traffic evenly.
+              负载均衡器使用轮询分发流量。
             </p>
           </div>
           <div class="bg-gray-800/30 p-3 rounded">
-            <strong class="text-white block mb-1">Failure Conditions</strong>
+            <strong class="text-white block mb-1">失败条件</strong>
             <p class="text-gray-400">
-              Reputation reaches 0% or Money reaches -$1000.
+              声望降至 0% 或资金 ≤ -$1000。
             </p>
           </div>
         </div>
@@ -973,30 +959,25 @@
       <!-- Advanced Services -->
       <div class="mt-8">
         <h3 class="text-lg font-bold text-blue-400 mb-4">
-          ADVANCED SERVICES
+          高级服务
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div class="bg-gray-800/30 p-3 rounded border border-orange-900/50">
-            <strong class="text-orange-400 block mb-1">Message Queue</strong>
+            <strong class="text-orange-400 block mb-1">消息队列</strong>
             <p class="text-gray-400 text-xs">
-              Massive buffer holding 200 requests. Place after Firewall to
-              smooth DDoS spikes, or before Compute to prevent overload. Cheap
-              insurance against traffic bursts.
+              最多缓冲 200 请求。放在防火墙后可平滑 DDoS，高峰前置于计算避免过载，是廉价的抗峰值方案。
             </p>
             <p class="text-gray-500 text-xs mt-1">
-              Flow: Firewall → Queue → Load Balancer or Load Balancer → Queue
-              → Compute
+              推荐流向：防火墙 → 队列 → 负载均衡 或 负载均衡 → 队列 → 计算
             </p>
           </div>
           <div class="bg-gray-800/30 p-3 rounded border border-red-900/50">
-            <strong class="text-red-400 block mb-1">Memory Cache</strong>
+            <strong class="text-red-400 block mb-1">内存缓存</strong>
             <p class="text-gray-400 text-xs">
-              Caching layer with 35-65% hit rate. Cache hits complete
-              instantly without hitting DB/Storage. Upgrade tiers for higher
-              hit rates. Great for reducing DB costs.
+              35-65% 命中率的缓存层。命中后无需访问数据库/存储，可升级提升命中率，显著降低数据库成本。
             </p>
             <p class="text-gray-500 text-xs mt-1">
-              Flow: Compute → Cache → DB/Storage
+              推荐流向：计算 → 缓存 → 数据库/存储
             </p>
           </div>
         </div>
@@ -1005,7 +986,7 @@
       <div class="mt-8 text-center">
         <button onclick="closeFAQ()"
           class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-8 rounded-lg transition">
-          Close Manual
+          关闭手册
         </button>
       </div>
     </div>

@@ -3,175 +3,175 @@ const TUTORIAL_STORAGE_KEY = 'serverSurvivalTutorialComplete';
 const TUTORIAL_STEPS = [
     {
         id: 'welcome',
-        title: 'Welcome, Architect!',
-        text: 'You are in charge of a server infrastructure. Your goal is to route incoming traffic correctly and protect against attacks. Let\'s build your first setup!',
+        title: '欢迎，架构师！',
+        text: '你将接管一套服务器基础设施。目标是正确路由流量并抵御攻击。让我们搭建第一版架构！',
         icon: '👋',
         highlight: null,
         action: 'next',
         position: 'center',
-        hint: 'Traffic will start flowing once you press Play. First, let\'s prepare your defenses!'
+        hint: '点击播放后流量才会开始进入，先把防线准备好！'
     },
     {
         id: 'traffic-types',
-        title: 'HTTP Traffic Types',
+        title: 'HTTP 流量类型',
         text: '<div class="space-y-2 text-left text-sm">' +
-            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-400 inline-block"></span><span class="text-green-400 font-bold w-16">STATIC</span><span class="text-gray-300">GET request • Images, CSS, JS files → <span class="text-emerald-400">Storage</span></span></div>' +
-            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-400 inline-block"></span><span class="text-blue-400 font-bold w-16">READ</span><span class="text-gray-300">GET request • Fetch user data, API calls → <span class="text-red-400">Database</span></span></div>' +
-            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-400 inline-block"></span><span class="text-orange-400 font-bold w-16">WRITE</span><span class="text-gray-300">POST/PUT • Create/update records → <span class="text-red-400">Database</span></span></div>' +
-            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span><span class="text-yellow-400 font-bold w-16">UPLOAD</span><span class="text-gray-300">POST+file • User uploads, media → <span class="text-emerald-400">Storage</span></span></div>' +
-            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span><span class="text-cyan-400 font-bold w-16">SEARCH</span><span class="text-gray-300">GET+query • Full-text search, filters → <span class="text-red-400">Database</span></span></div>' +
-            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-400 inline-block"></span><span class="text-red-400 font-bold w-16">ATTACK</span><span class="text-gray-300">DDoS, SQL injection, bots → <span class="text-purple-400">Block with Firewall!</span></span></div>' +
+            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-green-400 inline-block"></span><span class="text-green-400 font-bold w-16">STATIC</span><span class="text-gray-300">GET • 图片、CSS、JS → <span class="text-emerald-400">存储</span></span></div>' +
+            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-blue-400 inline-block"></span><span class="text-blue-400 font-bold w-16">READ</span><span class="text-gray-300">GET • 用户/API 数据 → <span class="text-red-400">数据库</span></span></div>' +
+            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-400 inline-block"></span><span class="text-orange-400 font-bold w-16">WRITE</span><span class="text-gray-300">POST/PUT • 写入/更新 → <span class="text-red-400">数据库</span></span></div>' +
+            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span><span class="text-yellow-400 font-bold w-16">UPLOAD</span><span class="text-gray-300">POST+文件 • 上传/媒体 → <span class="text-emerald-400">存储</span></span></div>' +
+            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span><span class="text-cyan-400 font-bold w-16">SEARCH</span><span class="text-gray-300">GET+查询 • 全文搜索/过滤 → <span class="text-red-400">数据库</span></span></div>' +
+            '<div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-400 inline-block"></span><span class="text-red-400 font-bold w-16">ATTACK</span><span class="text-gray-300">DDoS、SQL 注入、机器人 → <span class="text-purple-400">用防火墙阻挡！</span></span></div>' +
             '</div>' +
             '<div class="mt-3 pt-2 border-t border-gray-700 text-xs text-gray-400">' +
-            '<div class="flex justify-between"><span>Cache reduces DB/Storage load:</span><span>STATIC 90% • READ 40% • SEARCH 15%</span></div>' +
-            '<div class="flex justify-between"><span>Heavy processing (slower):</span><span>UPLOAD 2× • SEARCH 2.5×</span></div>' +
+            '<div class="flex justify-between"><span>缓存可减轻数据库/存储压力：</span><span>STATIC 90% • READ 40% • SEARCH 15%</span></div>' +
+            '<div class="flex justify-between"><span>耗时操作（更慢）：</span><span>UPLOAD 2× • SEARCH 2.5×</span></div>' +
             '</div>',
         icon: '🌐',
         highlight: null,
         action: 'next',
         position: 'center',
-        hint: 'Real backends handle these exact request types! Route them to the correct destination to earn rewards.'
+        hint: '真实后端也在处理这些流量类型！把它们路由到正确的终点才能赚钱。'
     },
     {
         id: 'place-firewall',
-        title: 'Deploy Firewall',
-        text: 'The <span class="text-purple-400 font-bold">Firewall</span> is your first line of defense. It blocks <span class="text-red-400">MALICIOUS</span> traffic (red) that can destroy your reputation. Click the FW button, then click on the grid to place it.',
+        title: '部署防火墙',
+        text: '<span class="text-purple-400 font-bold">防火墙</span>是第一道防线，拦截会摧毁声望的<span class="text-red-400">恶意</span>流量。点击防火墙按钮，再在网格上放置。',
         icon: '🛡️',
         highlight: 'tool-waf',
         action: 'place_waf',
-        hint: 'Place the Firewall close to the Internet node (the cyan box on the left) for easier connection.'
+        hint: '把防火墙放在互联网节点（左侧青色方块）附近，连线更方便。'
     },
     {
         id: 'connect-firewall',
-        title: 'Connect to Internet',
-        text: 'Great! Now connect the <span class="text-cyan-400 font-bold">Internet</span> to your Firewall. Select the <span class="text-blue-400 font-bold">Link</span> tool, click on Internet first, then click on the Firewall.',
+        title: '连接到互联网',
+        text: '很好！现在把<span class="text-cyan-400 font-bold">互联网</span>连接到防火墙。选择<span class="text-blue-400 font-bold">连接</span>工具，先点互联网再点防火墙。',
         icon: '🔗',
         highlight: 'tool-connect',
         action: 'connect_internet_waf',
-        hint: 'All traffic enters through the Internet node. Without this connection, no traffic will reach your infrastructure.'
+        hint: '所有流量都从互联网节点进入，没有这条线流量无法进入你的架构。'
     },
     {
         id: 'place-lb',
-        title: 'Deploy Load Balancer',
-        text: 'The <span class="text-blue-400 font-bold">Load Balancer</span> distributes traffic across multiple servers. This prevents overload and improves reliability.',
+        title: '部署负载均衡',
+        text: '<span class="text-blue-400 font-bold">负载均衡</span>把流量分发到多台服务器，防止过载，提升可靠性。',
         icon: '⚖️',
         highlight: 'tool-alb',
         action: 'place_alb',
-        hint: 'Load Balancers use Round Robin to evenly distribute requests.'
+        hint: '负载均衡使用轮询，自动均衡请求。'
     },
     {
         id: 'connect-fw-lb',
-        title: 'Connect Firewall to LB',
-        text: 'Connect your Firewall to the Load Balancer. Clean traffic will flow from Firewall → Load Balancer.',
+        title: '连接防火墙 → 负载均衡',
+        text: '把防火墙连接到负载均衡，净化后的流量会从 防火墙 → 负载均衡 流动。',
         icon: '🔗',
         highlight: 'tool-connect',
         action: 'connect_waf_alb',
-        hint: 'Traffic flow: Internet → Firewall (blocks MALICIOUS) → Load Balancer → ...'
+        hint: '完整流向：互联网 → 防火墙（拦截恶意） → 负载均衡 → ...'
     },
     {
         id: 'place-compute',
-        title: 'Deploy Compute Server',
-        text: '<span class="text-orange-400 font-bold">Compute</span> processes all requests. It routes traffic to the correct destination: <span class="text-emerald-400">Storage</span> for STATIC/UPLOAD, <span class="text-red-400">Database</span> for READ/WRITE/SEARCH.',
+        title: '部署计算节点',
+        text: '<span class="text-orange-400 font-bold">计算</span>处理所有请求，并把它们路由到正确终点：<span class="text-emerald-400">存储</span>处理 STATIC/UPLOAD，<span class="text-red-400">数据库</span>处理 READ/WRITE/SEARCH。',
         icon: '⚡',
         highlight: 'tool-lambda',
         action: 'place_compute',
-        hint: 'You can upgrade Compute later to handle more traffic (Tier 1 → 2 → 3). Heavy requests like UPLOAD and SEARCH take longer to process.'
+        hint: '计算节点可升级以承载更多流量（1 → 2 → 3 级）。UPLOAD/SEARCH 处理时间更长。'
     },
     {
         id: 'connect-lb-compute',
-        title: 'Connect LB to Compute',
-        text: 'Connect the Load Balancer to your Compute server.',
+        title: '连接负载均衡 → 计算',
+        text: '把负载均衡连接到计算节点。',
         icon: '🔗',
         highlight: 'tool-connect',
         action: 'connect_alb_compute',
-        hint: 'You can add multiple Compute servers and the Load Balancer will distribute traffic between them.'
+        hint: '可以放多台计算节点，负载均衡会自动分配请求。'
     },
     {
         id: 'place-storage',
-        title: 'Deploy File Storage',
-        text: '<span class="text-emerald-400 font-bold">File Storage</span> handles <span class="text-green-400">STATIC</span> (green) and <span class="text-yellow-400">UPLOAD</span> (yellow) traffic. Without it, these requests will fail!',
+        title: '部署文件存储',
+        text: '<span class="text-emerald-400 font-bold">文件存储</span>处理<span class="text-green-400">STATIC</span>（绿）和<span class="text-yellow-400">UPLOAD</span>（黄）流量，没有它这些请求都会失败！',
         icon: '📁',
         highlight: 'tool-s3',
         action: 'place_s3',
-        hint: 'STATIC = images, CSS, JS files (90% cache hit rate). UPLOAD = file uploads (heavy, never cached).'
+        hint: 'STATIC = 图片/CSS/JS（90% 缓存命中）；UPLOAD = 文件上传（重处理，不缓存）。'
     },
     {
         id: 'place-cdn',
-        title: 'Deploy CDN',
-        text: '<span class="text-green-400 font-bold">CDN</span> (Content Delivery Network) speeds up <span class="text-green-400">STATIC</span> content delivery. It sits between the Internet and Storage.',
+        title: '部署 CDN',
+        text: '<span class="text-green-400 font-bold">CDN</span> 加速 <span class="text-green-400">STATIC</span> 内容，在互联网与存储之间。',
         icon: '🌍',
         highlight: 'tool-cdn',
         action: 'place_cdn',
-        hint: 'CDNs have a very high cache hit rate (95%), meaning most requests never need to touch your Storage servers!'
+        hint: 'CDN 缓存命中率高达 95%，多数请求无需触达存储！'
     },
     {
         id: 'connect-internet-cdn',
-        title: 'Connect Internet to CDN',
-        text: 'Connect the <span class="text-cyan-400 font-bold">Internet</span> to your <span class="text-green-400 font-bold">CDN</span>. This allows users to hit the edge cache first.',
+        title: '连接互联网 → CDN',
+        text: '把<span class="text-cyan-400 font-bold">互联网</span>连到<span class="text-green-400 font-bold">CDN</span>，用户先命中边缘缓存。',
         icon: '🔗',
         highlight: 'tool-connect',
         action: 'connect_internet_cdn',
-        hint: 'Traffic flow: Internet → CDN. If cache miss → Storage.'
+        hint: '流向：互联网 → CDN，如缓存未命中再走存储。'
     },
     {
         id: 'connect-cdn-s3',
-        title: 'Connect CDN to Storage',
-        text: 'Connect the <span class="text-green-400 font-bold">CDN</span> to <span class="text-emerald-400 font-bold">File Storage</span>. This allows the CDN to fetch content on cache misses.',
+        title: '连接 CDN → 存储',
+        text: '把<span class="text-green-400 font-bold">CDN</span>连到<span class="text-emerald-400 font-bold">文件存储</span>，缓存未命中时可回源取文件。',
         icon: '🔗',
         highlight: 'tool-connect',
         action: 'connect_cdn_s3',
-        hint: 'Only cache misses (5%) will go to Storage. This saves money and capacity!'
+        hint: '只有约 5% 的缓存未命中会访问存储，节省成本与容量。'
     },
     {
         id: 'place-db',
-        title: 'Deploy SQL Database',
-        text: '<span class="text-red-400 font-bold">SQL Database</span> handles <span class="text-blue-400">READ</span>, <span class="text-orange-400">WRITE</span>, and <span class="text-cyan-400">SEARCH</span> traffic. APIs need database storage.',
+        title: '部署数据库',
+        text: '<span class="text-red-400 font-bold">SQL 数据库</span>处理 <span class="text-blue-400">READ</span>、<span class="text-orange-400">WRITE</span>、<span class="text-cyan-400">SEARCH</span> 流量，API 离不开数据库。',
         icon: '🗄️',
         highlight: 'tool-db',
         action: 'place_db',
-        hint: 'READ = data fetch (40% cache). WRITE = database updates (never cached). SEARCH = complex queries (15% cache, heavy).'
+        hint: 'READ = 读取（40% 缓存）；WRITE = 更新（不缓存）；SEARCH = 复杂查询（15% 缓存，重）。'
     },
     {
         id: 'connect-compute-storage',
-        title: 'Connect to Storage',
-        text: 'Connect <span class="text-orange-400">Compute</span> to <span class="text-emerald-400">File Storage</span>. Use the Link tool.',
+        title: '连接到存储',
+        text: '把<span class="text-orange-400">计算</span>连到<span class="text-emerald-400">文件存储</span>，使用连接工具。',
         icon: '🔗',
         highlight: 'tool-connect',
         action: 'connect_compute_s3',
-        hint: 'Compute automatically routes STATIC and UPLOAD traffic to File Storage.'
+        hint: '计算会自动将 STATIC 和 UPLOAD 路由到存储。'
     },
     {
         id: 'connect-compute-db',
-        title: 'Connect to Database',
-        text: 'Connect <span class="text-orange-400">Compute</span> to <span class="text-red-400">SQL Database</span>.',
+        title: '连接到数据库',
+        text: '把<span class="text-orange-400">计算</span>连到<span class="text-red-400">数据库</span>。',
         icon: '🔗',
         highlight: 'tool-connect',
         action: 'connect_compute_db',
-        hint: 'Compute automatically routes READ, WRITE, and SEARCH traffic to SQL Database.'
+        hint: '计算会自动将 READ、WRITE、SEARCH 路由到数据库。'
     },
     {
         id: 'ready',
-        title: 'Infrastructure Ready!',
-        text: 'Your basic infrastructure is complete! Press the <span class="text-green-400 font-bold">Play</span> button to start the simulation. Watch as traffic flows through your system!',
+        title: '基础架构就绪！',
+        text: '基础架构搭好了！点击<span class="text-green-400 font-bold">播放</span>开始模拟，观察流量如何穿过系统。',
         icon: '🚀',
         highlight: 'btn-play',
         action: 'start_game',
-        hint: 'Monitor the colored rings around services - green is good, red means overload. Upgrade or add more services as needed!'
+        hint: '关注服务周围的彩色环：绿色正常，红色过载。需要时升级或再加服务。'
     },
     {
         id: 'complete',
-        title: 'Tutorial Complete!',
-        text: '<span class="text-green-400">Congratulations!</span> You now know the basics. Remember:<br><br>' +
-            '• <span class="text-red-400">Red</span> MALICIOUS → Block with Firewall<br>' +
-            '• <span class="text-green-400">Green</span> STATIC / <span class="text-yellow-400">Yellow</span> UPLOAD → Route to Storage<br>' +
-            '• <span class="text-blue-400">Blue</span> READ / <span class="text-orange-400">Orange</span> WRITE / <span class="text-cyan-400">Cyan</span> SEARCH → Route to SQL DB<br>' +
-            '• Cache helps STATIC (90%), READ (40%), SEARCH (15%)<br><br>' +
-            'Good luck, Architect!',
+        title: '教程完成！',
+        text: '<span class="text-green-400">恭喜！</span> 你已掌握基础。记住：<br><br>' +
+            '• <span class="text-red-400">红</span> = 恶意 → 用防火墙阻挡<br>' +
+            '• <span class="text-green-400">绿</span> STATIC / <span class="text-yellow-400">黄</span> UPLOAD → 去存储<br>' +
+            '• <span class="text-blue-400">蓝</span> READ / <span class="text-orange-400">橙</span> WRITE / <span class="text-cyan-400">青</span> SEARCH → 去数据库<br>' +
+            '• 缓存可帮助：STATIC 90%、READ 40%、SEARCH 15%<br><br>' +
+            '祝你好运，架构师！',
         icon: '🎉',
         highlight: null,
         action: 'finish',
         position: 'center',
-        hint: 'Don\'t worry if your budget goes negative at first! Just like real infrastructure - you invest upfront, then profit comes from processed traffic. Each completed request earns money!'
+        hint: '前期预算变负很正常！就像真实架构一样，先投入，处理请求后才盈利。每个完成的请求都会赚钱！'
     }
 ];
 

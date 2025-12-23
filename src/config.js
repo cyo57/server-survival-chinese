@@ -26,7 +26,7 @@ const CONFIG = {
   },
   trafficTypes: {
     STATIC: {
-      name: "STATIC",
+      name: "静态",
       method: "GET",
       color: 0x4ade80,
       reward: 0.5,
@@ -37,7 +37,7 @@ const CONFIG = {
       processingWeight: 0.5,
     },
     READ: {
-      name: "READ",
+      name: "读取",
       method: "GET",
       color: 0x3b82f6,
       reward: 0.8,
@@ -48,7 +48,7 @@ const CONFIG = {
       processingWeight: 1.0,
     },
     WRITE: {
-      name: "WRITE",
+      name: "写入",
       method: "POST/PUT",
       color: 0xf97316,
       reward: 1.2,
@@ -59,7 +59,7 @@ const CONFIG = {
       processingWeight: 1.5,
     },
     UPLOAD: {
-      name: "UPLOAD",
+      name: "上传",
       method: "POST+file",
       color: 0xfbbf24,
       reward: 1.5,
@@ -70,7 +70,7 @@ const CONFIG = {
       processingWeight: 2.0,
     },
     SEARCH: {
-      name: "SEARCH",
+      name: "搜索",
       method: "GET+query",
       color: 0x06b6d4,
       reward: 0.8,
@@ -81,7 +81,7 @@ const CONFIG = {
       processingWeight: 2.5,
     },
     MALICIOUS: {
-      name: "MALICIOUS",
+      name: "恶意",
       method: "any",
       color: 0xef4444,
       reward: 0,
@@ -95,39 +95,39 @@ const CONFIG = {
   internetNodeStartPos: { x: -40, y: 0, z: 0 },
   services: {
     waf: {
-      name: "Firewall",
+      name: "防火墙",
       cost: 40,
       type: "waf",
       processingTime: 20,
       capacity: 30,
       upkeep: 4,
       tooltip: {
-        upkeep: "Low",
-        desc: "<b>Firewall.</b> The first line of defense. Blocks Malicious traffic.",
+        upkeep: "低",
+        desc: "<b>防火墙。</b> 第一层防线，拦截恶意流量。",
       },
     },
     alb: {
-      name: "Load Balancer",
+      name: "负载均衡",
       cost: 50,
       type: "alb",
       processingTime: 50,
       capacity: 20,
       upkeep: 6,
       tooltip: {
-        upkeep: "Medium",
-        desc: "<b>Load Balancer.</b> Distributes traffic to multiple Compute instances.",
+        upkeep: "中",
+        desc: "<b>负载均衡。</b> 将流量分发到多个计算节点。",
       },
     },
     compute: {
-      name: "Compute",
+      name: "计算",
       cost: 60,
       type: "compute",
       processingTime: 600,
       capacity: 4,
       upkeep: 12,
       tooltip: {
-        upkeep: "High",
-        desc: "<b>Compute Node.</b> Processes requests. <b>Upgradeable (Tiers 1-3).</b>",
+        upkeep: "高",
+        desc: "<b>计算节点。</b> 处理请求。<b>可升级（1-3级）。</b>",
       },
       tiers: [
         { level: 1, capacity: 4, cost: 0 },
@@ -136,15 +136,15 @@ const CONFIG = {
       ],
     },
     db: {
-      name: "Relational DB",
+      name: "关系型数据库",
       cost: 150,
       type: "db",
       processingTime: 300,
       capacity: 8,
       upkeep: 24,
       tooltip: {
-        upkeep: "Very High",
-        desc: "<b>SQL Database.</b> Destination for READ/WRITE/SEARCH traffic. <b>Upgradeable (Tiers 1-3).</b>",
+        upkeep: "极高",
+        desc: "<b>SQL 数据库。</b> READ/WRITE/SEARCH 的终点。<b>可升级（1-3级）。</b>",
       },
       tiers: [
         { level: 1, capacity: 8, cost: 0 },
@@ -153,15 +153,15 @@ const CONFIG = {
       ],
     },
     s3: {
-      name: "File Storage",
+      name: "文件存储",
       cost: 25,
       type: "s3",
       processingTime: 200,
       capacity: 25,
       upkeep: 5,
       tooltip: {
-        upkeep: "Low",
-        desc: "<b>Storage.</b> Destination for STATIC/UPLOAD traffic.",
+        upkeep: "低",
+        desc: "<b>存储。</b> STATIC/UPLOAD 的终点。",
       },
     },
     cdn: {
@@ -172,21 +172,21 @@ const CONFIG = {
       capacity: 50,
       upkeep: 5,
       tooltip: {
-        upkeep: "Low",
-        desc: "<b>Content Delivery Network.</b> Caches STATIC content at the edge. High cache hit rate.",
+        upkeep: "低",
+        desc: "<b>内容分发网络。</b> 在边缘缓存 STATIC 内容，命中率极高。",
       },
       cacheHitRate: 0.95,
     },
     cache: {
-      name: "Memory Cache",
+      name: "内存缓存",
       cost: 60,
       type: "cache",
       processingTime: 50,
       capacity: 30,
       upkeep: 8,
       tooltip: {
-        upkeep: "Medium",
-        desc: "<b>Memory Cache.</b> Caches responses to reduce DB load.",
+        upkeep: "中",
+        desc: "<b>内存缓存。</b> 缓存响应以减轻数据库压力。",
       },
       cacheHitRate: 0.35,
       tiers: [
@@ -196,7 +196,7 @@ const CONFIG = {
       ],
     },
     sqs: {
-      name: "Message Queue",
+      name: "消息队列",
       cost: 35,
       type: "sqs",
       processingTime: 100,
@@ -204,8 +204,8 @@ const CONFIG = {
       maxQueueSize: 200,
       upkeep: 2,
       tooltip: {
-        upkeep: "Low",
-        desc: "<b>Queue.</b> Buffers requests during spikes. Prevents drops.",
+        upkeep: "低",
+        desc: "<b>队列。</b> 在流量高峰缓冲请求，避免丢弃。",
       },
     },
   },
@@ -264,7 +264,7 @@ const CONFIG = {
       warningTime: 3, // Less warning = more reactive gameplay
       patterns: [
         {
-          name: "API Heavy",
+          name: "API 高峰",
           distribution: {
             STATIC: 0.1,
             READ: 0.35,
@@ -275,7 +275,7 @@ const CONFIG = {
           },
         },
         {
-          name: "Storage Surge",
+          name: "存储暴涨",
           distribution: {
             STATIC: 0.45,
             READ: 0.1,
@@ -286,7 +286,7 @@ const CONFIG = {
           },
         },
         {
-          name: "Search Storm",
+          name: "搜索风暴",
           distribution: {
             STATIC: 0.15,
             READ: 0.15,
@@ -297,7 +297,7 @@ const CONFIG = {
           },
         },
         {
-          name: "Write Flood",
+          name: "写入洪峰",
           distribution: {
             STATIC: 0.1,
             READ: 0.1,
@@ -319,30 +319,30 @@ const CONFIG = {
       events: [
         {
           type: "COST_SPIKE",
-          name: "Cloud Price Surge",
+          name: "云服务涨价",
           duration: 20,
           multiplier: 3.0,
-          description: "Upkeep costs tripled!",
+          description: "维护费用变为 3 倍！",
         },
         {
           type: "CAPACITY_DROP",
-          name: "Service Degradation",
+          name: "服务退化",
           duration: 15,
           multiplier: 0.4,
-          description: "All capacities reduced 60%!",
+          description: "所有容量下降 60%！",
         },
         {
           type: "TRAFFIC_BURST",
-          name: "Viral Traffic",
+          name: "流量爆红",
           duration: 12,
           rpsMultiplier: 4.0,
-          description: "Traffic 4x!",
+          description: "流量提升 4 倍！",
         },
         {
           type: "SERVICE_OUTAGE",
-          name: "Service Outage",
+          name: "服务故障",
           duration: 15,
-          description: "Random service goes offline!",
+          description: "随机服务下线！",
         },
       ],
     },
